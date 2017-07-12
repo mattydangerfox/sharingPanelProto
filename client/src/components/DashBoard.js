@@ -27,7 +27,7 @@ class DashBoard extends Component {
 
 
 export const panelsQuery = gql`
-  query panelsQuery {
+  query PanelsQuery {
       panels {
           id
           title
