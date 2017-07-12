@@ -8,6 +8,12 @@ class Panel extends Component {
       variables: {
         id: this.props.panel.id
       },
+      optimisticResponse: {
+        removePanel: {
+          id: this.props.panel.id,
+          __typename: 'Panel',
+        },
+      },
       update: (store, { data: { removePanel } }) => {
         const data = store.readQuery({
           query: panelsQuery,
