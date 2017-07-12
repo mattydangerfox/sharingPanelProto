@@ -17,6 +17,14 @@ export const resolvers = {
       const newPanel = {id: String(nextId++), title: args.title};
       panels.push(newPanel);
       return newPanel;
+    },
+    removePanel: (root, {id}) => {
+      const index = panels.findIndex(p => p.id === id);
+      if (index === -1) {
+        throw new Error(`Panel id ${id} does not exist`);
+      }
+      const removedItem = panels.splice(index, 1);
+      return removedItem[0]
     }
   }
 };

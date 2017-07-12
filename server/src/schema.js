@@ -13,6 +13,7 @@ type Query {
 
 type Mutation {
   addPanel(title: String!): Panel
+  removePanel(id: ID!): Panel
 }
 `;
 
