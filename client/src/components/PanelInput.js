@@ -11,6 +11,13 @@ class PanelInput extends Component {
         variables: {
           title: e.target.value
         },
+        optimisticResponse: {
+          addPanel: {
+            title: e.target.value,
+            id: Math.round(Math.random() * -1000000),
+            __typename: 'Panel',
+          },
+        },
         update: (store, { data: { addPanel } }) => {
           const data = store.readQuery({
             query: panelsQuery,
