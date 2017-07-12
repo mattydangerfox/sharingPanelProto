@@ -24,6 +24,26 @@ class DashBoard extends Component {
         prev.panels[index] = updatedPanel;
         return prev
       }
+    });
+    this.props.data.subscribeToMore({
+      document: panelRemovedSubscription,
+      updateQuery: (prev, {subscriptionData}) => {
+        if (!subscriptionData) {
+          return prev;
+        }
+
+        const panelRemoved = subscriptionData.data.panelRemoved;
+        const index = prev.panels.findIndex(p => p.id === panelRemoved.id);
+        if (index === -1) {
+          return prev;
+        }
+        // TODO: don't know how to remove item from store correctly
+        let panels = [...prev.panels];
+        panels.splice(index, 1);
+        return Object.assign({}, prev, {
+            panels: panels
+        });
+      }
     })
   }
 
@@ -62,6 +82,14 @@ const panelUpdatedSubscription = gql`
           title
       }
   }
+`;
+
+const panelRemovedSubscription = gql`
+    subscription PanelRemoved {
+        panelRemoved {
+            id
+        }
+    }
 `;
 
 export default(graphql(panelsQuery))(DashBoard);

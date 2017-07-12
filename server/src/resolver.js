@@ -27,6 +27,7 @@ export const resolvers = {
         throw new Error(`Panel id ${id} does not exist`);
       }
       const removedItem = panels.splice(index, 1);
+      pubsub.publish('panelRemoved', { panelRemoved: {id: id}});
       return removedItem[0]
     },
     updatePanel: (root, {input: {id, title}}) => {
@@ -42,6 +43,12 @@ export const resolvers = {
   Subscription: {
     panelUpdated: {
       subscribe: withFilter(() => pubsub.asyncIterator('panelUpdated'), (payload, variables) => {
+        // We will get all the updated panels at this moment.
+        return true;
+      })
+    },
+    panelRemoved: {
+      subscribe: withFilter(() => pubsub.asyncIterator('panelRemoved'), (payload, variables) => {
         // We will get all the updated panels at this moment.
         return true;
       })
