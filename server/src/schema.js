@@ -21,6 +21,10 @@ type Mutation {
   removePanel(id: ID!): Panel
   updatePanel(input: UpdatePanelInput!): Panel
 }
+
+type Subscription {
+  panelUpdated: Panel
+}
 `;
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });

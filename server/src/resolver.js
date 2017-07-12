@@ -1,3 +1,5 @@
+import { PubSub, withFilter } from 'graphql-subscriptions';
+
 const panels = [{
   id: '1',
   title: 'color trend since 2012',
@@ -7,6 +9,7 @@ const panels = [{
 }];
 
 let nextId = 3;
+const pubsub = new PubSub();
 
 export const resolvers = {
   Query: {
@@ -32,7 +35,16 @@ export const resolvers = {
         throw new Error(`Panel id ${id} does not exist`);
       }
       panels[index] = {id: id, title: title};
+      pubsub.publish('panelUpdated', { panelUpdated: {id: id, title: title}});
       return panels[index];
+    }
+  },
+  Subscription: {
+    panelUpdated: {
+      subscribe: withFilter(() => pubsub.asyncIterator('panelUpdated'), (payload, variables) => {
+        // We will get all the updated panels at this moment.
+        return true;
+      })
     }
   }
 };
