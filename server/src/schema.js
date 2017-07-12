@@ -10,6 +10,10 @@ type Panel {
 type Query {
   panels: [Panel]
 }
+
+type Mutation {
+  addPanel(title: String!): Panel
+}
 `;
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });

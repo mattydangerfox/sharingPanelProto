@@ -6,8 +6,17 @@ const panels = [{
   title: 'fruit trend since 2013',
 }];
 
+let nextId = 3;
+
 export const resolvers = {
   Query: {
     panels: () => panels
   },
+  Mutation: {
+    addPanel: (root, args) => {
+      const newPanel = {id: String(nextId++), title: args.title};
+      panels.push(newPanel);
+      return newPanel;
+    }
+  }
 };
