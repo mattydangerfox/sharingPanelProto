@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
+import {
+  gql,
+  graphql,
+} from 'react-apollo';
 import PanelList from './PanelList';
 import PanelInput from './PanelInput';
 
 class DashBoard extends Component {
   render() {
-    const panels = [{id: 1, title: "competitors"}, {id: 2, title: "collaborators"}];
+    const { data: {loading, error, panels } } = this.props;
+    if (loading) {
+      return <h1>loading...</h1>
+    }
+    if (error) {
+      return <h1>Error: {error.message}</h1>
+    }
     return (
       <div className="Dashboard">
         <h2>Dashboard</h2>
@@ -15,4 +25,13 @@ class DashBoard extends Component {
   }
 }
 
-export default DashBoard;
+
+export const panelsQuery = gql`
+  query panelsQuery {
+      panels {
+          id
+          title
+      }
+  }
+`;
+export default(graphql(panelsQuery))(DashBoard);
