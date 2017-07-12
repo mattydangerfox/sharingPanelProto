@@ -5,6 +5,7 @@ import {
   createNetworkInterface,
   toIdValue,
 } from 'react-apollo';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import './App.css';
 import DashBoard from './components/DashBoard';
 
@@ -14,6 +15,13 @@ networkInterface.use([{
     setTimeout(next, 500);
   },
 }]);
+const wsClient = new SubscriptionClient(`ws://localhost:4000/subscriptions`, {
+  reconnect: true
+});
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
+  networkInterface,
+  wsClient
+);
 
 function dataIdFromObject (result) {
   if (result.__typename) {
@@ -25,7 +33,7 @@ function dataIdFromObject (result) {
 }
 
 const client = new ApolloClient({
-  networkInterface: networkInterface,
+  networkInterface: networkInterfaceWithSubscriptions,
   customResolvers: {
     Query: {
       panel: (_, args) => toIdValue(dataIdFromObject({ __typename: 'Panel', id: args['id'] }))

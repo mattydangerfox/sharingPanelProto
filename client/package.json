@@ -5,7 +5,8 @@
   "dependencies": {
     "react": "^15.6.1",
     "react-apollo": "^1.4.3",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "subscriptions-transport-ws": "^0.8.1"
   },
   "devDependencies": {
     "react-scripts": "1.0.10"
