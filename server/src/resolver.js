@@ -25,6 +25,14 @@ export const resolvers = {
       }
       const removedItem = panels.splice(index, 1);
       return removedItem[0]
+    },
+    updatePanel: (root, {input: {id, title}}) => {
+      const index = panels.findIndex(p => p.id === id);
+      if (index === -1) {
+        throw new Error(`Panel id ${id} does not exist`);
+      }
+      panels[index] = {id: id, title: title};
+      return panels[index];
     }
   }
 };

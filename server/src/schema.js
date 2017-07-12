@@ -11,9 +11,15 @@ type Query {
   panels: [Panel]
 }
 
+input UpdatePanelInput {
+  id: ID!
+  title: String!
+}
+
 type Mutation {
   addPanel(title: String!): Panel
   removePanel(id: ID!): Panel
+  updatePanel(input: UpdatePanelInput!): Panel
 }
 `;
 
