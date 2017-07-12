@@ -25,6 +25,7 @@ type Mutation {
 type Subscription {
   panelUpdated: Panel
   panelRemoved: Panel
+  panelAdded: Panel
 }
 `;
 

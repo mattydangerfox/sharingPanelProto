@@ -44,6 +44,23 @@ class DashBoard extends Component {
             panels: panels
         });
       }
+    });
+    this.props.data.subscribeToMore({
+      document: panelAddedSubscription,
+      updateQuery: (prev, {subscriptionData}) => {
+        if (!subscriptionData) {
+          return prev;
+        }
+
+        const panelAdded = subscriptionData.data.panelAdded;
+        if (!prev.panels.find((panel) => panel.id === panelAdded.id)) {
+          return Object.assign({}, prev, {
+            panels: [...prev.panels, panelAdded]
+          });
+        } else {
+          return prev;
+        }
+      }
     })
   }
 
@@ -88,6 +105,15 @@ const panelRemovedSubscription = gql`
     subscription PanelRemoved {
         panelRemoved {
             id
+        }
+    }
+`;
+
+const panelAddedSubscription = gql`
+    subscription PanelAdded {
+        panelAdded {
+            id
+            title
         }
     }
 `;

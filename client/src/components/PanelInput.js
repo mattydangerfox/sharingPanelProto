@@ -22,7 +22,11 @@ class PanelInput extends Component {
           const data = store.readQuery({
             query: panelsQuery,
           });
-          data.panels.push(addPanel);
+          // don't double add the panel
+          if (!data.panels.find((msg) => msg.id === addPanel.id)) {
+            // Add our Message from the mutation to the end.
+            data.panels.push(addPanel);
+          }
           store.writeQuery({
             query: panelsQuery,
             data

@@ -19,6 +19,7 @@ export const resolvers = {
     addPanel: (root, args) => {
       const newPanel = {id: String(nextId++), title: args.title};
       panels.push(newPanel);
+      pubsub.publish('panelAdded', { panelAdded: newPanel});
       return newPanel;
     },
     removePanel: (root, {id}) => {
@@ -49,6 +50,12 @@ export const resolvers = {
     },
     panelRemoved: {
       subscribe: withFilter(() => pubsub.asyncIterator('panelRemoved'), (payload, variables) => {
+        // We will get all the updated panels at this moment.
+        return true;
+      })
+    },
+    panelAdded: {
+      subscribe: withFilter(() => pubsub.asyncIterator('panelAdded'), (payload, variables) => {
         // We will get all the updated panels at this moment.
         return true;
       })
