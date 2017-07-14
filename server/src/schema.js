@@ -2,10 +2,29 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { resolvers } from './resolver';
 
 const typeDefs = `
+type Title {
+  text: String
+}
+
+type xAxis {
+  categories: [String]
+}
+
+type SeriesData {
+  data: [Int]
+}
+
+type PanelData {
+  title: Title!
+  xAxis: xAxis!
+  series: [SeriesData]
+}
+
 type Panel {
   id: ID!
   owner: ID!
-  title: String!
+  title: String
+  panelData: PanelData
 }
 
 type Query {

@@ -91,6 +91,17 @@ export const panelsQuery = gql`
           id
           owner
           title
+          panelData {
+              title {
+                  text
+              }
+              xAxis {
+                  categories
+              }
+              series {
+                  data
+              }
+          }
       }
   }
 `;
@@ -99,7 +110,19 @@ const panelUpdatedSubscription = gql`
   subscription PanelUpdated {
       panelUpdated {
           id
+          owner
           title
+          panelData {
+              title {
+                  text
+              }
+              xAxis {
+                  categories
+              }
+              series {
+                  data
+              }
+          }
       }
   }
 `;

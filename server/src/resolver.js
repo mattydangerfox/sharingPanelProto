@@ -1,13 +1,45 @@
 import { PubSub, withFilter } from 'graphql-subscriptions';
 
+const hash = (str) => {
+  let hash = 5381,
+    i = str.length;
+
+  while(i) {
+    hash = (hash * 33) ^ str.charCodeAt(--i);
+  }
+
+  /* JavaScript does bitwise operations (like XOR, above) on 32-bit signed
+   * integers. Since we want the results to be always positive, convert the
+   * signed int to an unsigned by doing an unsigned bitshift. */
+  hash = hash >>> 0;
+  return ("000000000000" + hash).slice(-12);
+};
+
+const getPanelData = (title) => {
+  return {
+    title: {
+      text: title
+    },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    series: [{
+      data: hash(title).split('').map(e => parseInt(e))
+    }]
+  }
+};
+
+
 const panels = [{
   owner: '0',
   id: '1',
   title: 'apple value',
+  panelData: getPanelData('apple value')
 }, {
   owner: '0',
   id: '2',
   title: 'banana value',
+  panelData: getPanelData('banana value')
 }];
 
 let nextId = 3;
@@ -45,8 +77,14 @@ export const resolvers = {
       if (index === -1) {
         throw new Error(`Panel id ${id} does not exist`);
       }
-      panels[index] = {id: id, title: title};
-      pubsub.publish('panelUpdated', { panelUpdated: {id: id, title: title}});
+      const newPanel = {
+        owner: panels[index].owner,
+        id: id,
+        title: title,
+        panelData: getPanelData(title),
+      };
+      panels[index] = newPanel;
+      pubsub.publish('panelUpdated', { panelUpdated: newPanel});
       return panels[index];
     }
   },
