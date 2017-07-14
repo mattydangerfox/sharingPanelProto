@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { gql, graphql, compose } from 'react-apollo';
+import ReactHighcharts from 'react-highcharts';
 import { panelsQuery } from './DashBoard';
 
 const ENTER_KEY_CODE = 13;
@@ -68,17 +69,34 @@ class Panel extends Component {
 
   render() {
     const {id, owner, title} = this.props.panel;
+    const config = {
+      title: {
+        text: title
+      },
+      subtitle: {
+        text: `owner id: ${owner}, panel id: ${id}`
+      },
+      xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      series: [{
+        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 295.6, 454.4]
+      }]
+    };
     if (this.state.editing) {
       return (
-        <li><input placeholder={title} onKeyDown={this._handleKeyDownOnInput}/></li>
+        <div>
+          <input placeholder={title} onKeyDown={this._handleKeyDownOnInput}/>
+        </div>
       );
     }
 
     return (
-      <li>id: {id}, owner: {owner}, title: {title}
+      <div className="Panel">
+        <ReactHighcharts config = {config}/>
         <button type="button" onClick={this._handleOnClickEdit}>edit</button>
         <button type="button" onClick={this._handleOnClickRemove}>remove</button>
-      </li>
+      </div>
     );
   }
 }

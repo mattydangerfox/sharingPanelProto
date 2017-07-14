@@ -3,11 +3,11 @@ import { PubSub, withFilter } from 'graphql-subscriptions';
 const panels = [{
   owner: '0',
   id: '1',
-  title: 'color trend since 2012',
+  title: 'apple value',
 }, {
   owner: '0',
   id: '2',
-  title: 'fruit trend since 2013',
+  title: 'banana value',
 }];
 
 let nextId = 3;
