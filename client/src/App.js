@@ -7,7 +7,7 @@ import {
 } from 'react-apollo';
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import './App.css';
-import DashBoard from './components/DashBoard';
+import ResultTab from './components/ResultTab';
 
 const networkInterface = createNetworkInterface({ uri: 'http://localhost:4000/graphql' });
 networkInterface.use([{
@@ -47,7 +47,7 @@ class App extends Component {
     return (
       <ApolloProvider client={client}>
         <div className="App">
-          <DashBoard/>
+          <ResultTab/>
         </div>
       </ApolloProvider>
     );

@@ -1,9 +1,11 @@
 import { PubSub, withFilter } from 'graphql-subscriptions';
 
 const panels = [{
+  owner: '0',
   id: '1',
   title: 'color trend since 2012',
 }, {
+  owner: '0',
   id: '2',
   title: 'fruit trend since 2013',
 }];
@@ -13,11 +15,18 @@ const pubsub = new PubSub();
 
 export const resolvers = {
   Query: {
-    panels: () => panels
+    panels: ( root, { userId } ) => {
+      if (userId === 'admin') {
+        return panels
+      }
+      const a = panels.filter(panel => panel.owner === userId);
+      return a
+    }
   },
   Mutation: {
     addPanel: (root, args) => {
-      const newPanel = {id: String(nextId++), title: args.title};
+      const { input: { owner, title }} = args;
+      const newPanel = {id: String(nextId++), owner: owner, title: title};
       panels.push(newPanel);
       pubsub.publish('panelAdded', { panelAdded: newPanel});
       return newPanel;
@@ -57,7 +66,10 @@ export const resolvers = {
     panelAdded: {
       subscribe: withFilter(() => pubsub.asyncIterator('panelAdded'), (payload, variables) => {
         // We will get all the updated panels at this moment.
-        return true;
+        if (variables.userId === 'admin') {
+          return true;
+        }
+        return payload.panelAdded.owner === variables.userId;
       })
     }
   }

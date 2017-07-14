@@ -9,11 +9,15 @@ class PanelInput extends Component {
     if (e.keyCode === ENTER_KEY) {
       this.props.mutate({
         variables: {
-          title: e.target.value
+          input: {
+            owner: this.props.userId,
+            title: e.target.value
+          }
         },
         optimisticResponse: {
           addPanel: {
             title: e.target.value,
+            owner: this.props.userId,
             id: Math.round(Math.random() * -1000000),
             __typename: 'Panel',
           },
@@ -21,14 +25,16 @@ class PanelInput extends Component {
         update: (store, { data: { addPanel } }) => {
           const data = store.readQuery({
             query: panelsQuery,
+            variables: { userId: this.props.userId }
           });
           // don't double add the panel
-          if (!data.panels.find((msg) => msg.id === addPanel.id)) {
+          if (!data.panels.find((panel) => panel.id === addPanel.id)) {
             // Add our Message from the mutation to the end.
             data.panels.push(addPanel);
           }
           store.writeQuery({
             query: panelsQuery,
+            variables: { userId: this.props.userId },
             data
           });
         },
@@ -45,9 +51,10 @@ class PanelInput extends Component {
 }
 
 const addPanelMutation = gql`
-    mutation addPanel($title: String!) {
-        addPanel(title: $title) {
+    mutation addPanel($input: AddPanelInput!) {
+        addPanel(input: $input) {
             id
+            owner
             title
         }
     }

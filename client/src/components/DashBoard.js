@@ -47,6 +47,9 @@ class DashBoard extends Component {
     });
     this.props.data.subscribeToMore({
       document: panelAddedSubscription,
+      variables: {
+        userId: this.props.userId
+      },
       updateQuery: (prev, {subscriptionData}) => {
         if (!subscriptionData) {
           return prev;
@@ -75,18 +78,18 @@ class DashBoard extends Component {
     return (
       <div className="Dashboard">
         <h2>Dashboard</h2>
-        <div>input: <PanelInput/></div>
+        <div>input: <PanelInput {...this.props}/></div>
         <PanelList panels={panels}/>
       </div>
     );
   }
 }
 
-
 export const panelsQuery = gql`
-  query PanelsQuery {
-      panels {
+  query PanelsQuery($userId: ID!) {
+      panels(userId: $userId) {
           id
+          owner
           title
       }
   }
@@ -110,12 +113,17 @@ const panelRemovedSubscription = gql`
 `;
 
 const panelAddedSubscription = gql`
-    subscription PanelAdded {
-        panelAdded {
+    subscription PanelAdded($userId: ID!) {
+        panelAdded(userId: $userId) {
             id
             title
+            owner
         }
     }
 `;
 
-export default(graphql(panelsQuery))(DashBoard);
+export default(graphql(panelsQuery, {
+  options: (props) => ({
+    variables: { userId: props.userId },
+  })
+}))(DashBoard);

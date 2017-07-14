@@ -4,11 +4,17 @@ import { resolvers } from './resolver';
 const typeDefs = `
 type Panel {
   id: ID!
+  owner: ID!
   title: String!
 }
 
 type Query {
-  panels: [Panel]
+  panels(userId: ID!): [Panel]
+}
+
+input AddPanelInput {
+  owner: ID!
+  title: String!
 }
 
 input UpdatePanelInput {
@@ -17,7 +23,7 @@ input UpdatePanelInput {
 }
 
 type Mutation {
-  addPanel(title: String!): Panel
+  addPanel(input: AddPanelInput!): Panel
   removePanel(id: ID!): Panel
   updatePanel(input: UpdatePanelInput!): Panel
 }
@@ -25,7 +31,7 @@ type Mutation {
 type Subscription {
   panelUpdated: Panel
   panelRemoved: Panel
-  panelAdded: Panel
+  panelAdded(userId: ID!): Panel
 }
 `;
 

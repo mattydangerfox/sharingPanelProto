@@ -47,7 +47,8 @@ class Panel extends Component {
     } else if (e.keyCode === ENTER_KEY_CODE) {
       this.props.updatePanelMutation({
         variables: {
-          input: {id: this.props.panel.id, title: e.target.value}
+          input: {
+            id: this.props.panel.id, title: e.target.value}
         },
         update: (store, { data: { updatePanel } }) => {
           const data = store.readQuery({
@@ -66,7 +67,7 @@ class Panel extends Component {
   };
 
   render() {
-    const {id, title} = this.props.panel;
+    const {id, owner, title} = this.props.panel;
     if (this.state.editing) {
       return (
         <li><input placeholder={title} onKeyDown={this._handleKeyDownOnInput}/></li>
@@ -74,7 +75,7 @@ class Panel extends Component {
     }
 
     return (
-      <li>id: {id}, title: {title}
+      <li>id: {id}, owner: {owner}, title: {title}
         <button type="button" onClick={this._handleOnClickEdit}>edit</button>
         <button type="button" onClick={this._handleOnClickRemove}>remove</button>
       </li>
