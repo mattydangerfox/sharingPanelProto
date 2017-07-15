@@ -14,14 +14,7 @@ class PanelInput extends Component {
             title: e.target.value
           }
         },
-        optimisticResponse: {
-          addPanel: {
-            title: e.target.value,
-            owner: this.props.userId,
-            id: Math.round(Math.random() * -1000000),
-            __typename: 'Panel',
-          },
-        },
+        // TODO(sanghee): do we need optimistic response for add panel?
         update: (store, { data: { addPanel } }) => {
           const data = store.readQuery({
             query: panelsQuery,
@@ -56,6 +49,17 @@ const addPanelMutation = gql`
             id
             owner
             title
+            panelData {
+                title {
+                    text
+                }
+                xAxis {
+                    categories
+                }
+                series {
+                    data
+                }
+            }
         }
     }
 `;

@@ -58,7 +58,12 @@ export const resolvers = {
   Mutation: {
     addPanel: (root, args) => {
       const { input: { owner, title }} = args;
-      const newPanel = {id: String(nextId++), owner: owner, title: title};
+      const newPanel = {
+        owner: owner,
+        id: String(nextId++),
+        title: title,
+        panelData: getPanelData(title),
+      };
       panels.push(newPanel);
       pubsub.publish('panelAdded', { panelAdded: newPanel});
       return newPanel;

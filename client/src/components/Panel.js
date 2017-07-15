@@ -24,7 +24,7 @@ class Panel extends Component {
       },
       update: (store, { data: { removePanel } }) => {
         const data = store.readQuery({
-          query: panelsQuery,
+          query: panelsQuery
         });
         const index = data.panels.findIndex(p => p.id === this.props.panel.id);
         if (index !== -1) {
@@ -54,6 +54,7 @@ class Panel extends Component {
         update: (store, { data: { updatePanel } }) => {
           const data = store.readQuery({
             query: panelsQuery,
+            variables: { userId: this.props.userId }
           });
           const index = data.panels.findIndex(p => p.id === this.props.panel.id);
           data.panels[index] = updatePanel;
@@ -99,7 +100,19 @@ const updatePanelMutation = gql`
     mutation updatePanel($input: UpdatePanelInput!) {
         updatePanel(input: $input) {
             id
+            owner
             title
+            panelData {
+                title {
+                    text
+                }
+                xAxis {
+                    categories
+                }
+                series {
+                    data
+                }
+            }
         }
     }
 `;

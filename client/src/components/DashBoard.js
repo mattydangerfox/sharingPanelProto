@@ -79,7 +79,7 @@ class DashBoard extends Component {
       <div className="Dashboard">
         <h2>Dashboard</h2>
         <div>input: <PanelInput {...this.props}/></div>
-        <PanelList panels={panels}/>
+        { panels ? <PanelList userId={this.props.userId} panels={panels}/> : <div>no panel data</div>}
       </div>
     );
   }
@@ -139,8 +139,19 @@ const panelAddedSubscription = gql`
     subscription PanelAdded($userId: ID!) {
         panelAdded(userId: $userId) {
             id
-            title
             owner
+            title
+            panelData {
+                title {
+                    text
+                }
+                xAxis {
+                    categories
+                }
+                series {
+                    data
+                }
+            }
         }
     }
 `;
