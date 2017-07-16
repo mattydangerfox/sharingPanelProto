@@ -73,7 +73,8 @@ class Panel extends Component {
     const {id, owner, title, panelData} = this.props.panel;
     if (this.state.editing) {
       return (
-        <div>
+        <div className="Panel">
+          <ReactHighcharts config = {panelData}/>
           <input placeholder={title} onKeyDown={this._handleKeyDownOnInput}/>
         </div>
       );
