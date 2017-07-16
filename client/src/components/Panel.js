@@ -24,7 +24,8 @@ class Panel extends Component {
       },
       update: (store, { data: { removePanel } }) => {
         const data = store.readQuery({
-          query: panelsQuery
+          query: panelsQuery,
+          variables: { userId: this.props.userId }
         });
         const index = data.panels.findIndex(p => p.id === this.props.panel.id);
         if (index !== -1) {
