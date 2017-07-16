@@ -70,7 +70,7 @@ class Panel extends Component {
   };
 
   render() {
-    const {id, owner, title, panelData} = this.props.panel;
+    const {title, panelData} = this.props.panel;
     if (this.state.editing) {
       return (
         <div className="Panel">
