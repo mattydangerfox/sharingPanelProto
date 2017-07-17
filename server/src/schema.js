@@ -32,6 +32,7 @@ type Panel {
 
 type Query {
   panels(input: PanelsInput!): PanelsPayload
+  search(input: SearchInput!): SearchPayload
 }
 
 input PanelsInput {
@@ -40,6 +41,27 @@ input PanelsInput {
 
 type PanelsPayload {
   panels: [Panel]
+}
+
+input SearchInput {
+  query: String!
+}
+
+type SearchPayload {
+  panelData: PanelData!
+}
+
+type XAxis {
+  categories: [String]
+}
+
+type Series {
+  data: [Int]
+}
+
+type PanelData {
+  xAxis: XAxis
+  series: [Series]
 }
 `;
 

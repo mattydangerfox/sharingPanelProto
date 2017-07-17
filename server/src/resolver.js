@@ -1,3 +1,30 @@
+const hash = (str) => {
+  let hash = 5381,
+    i = str.length;
+
+  while(i) {
+    hash = (hash * 33) ^ str.charCodeAt(--i);
+  }
+
+  /* JavaScript does bitwise operations (like XOR, above) on 32-bit signed
+   * integers. Since we want the results to be always positive, convert the
+   * signed int to an unsigned by doing an unsigned bitshift. */
+  hash = hash >>> 0;
+  return ("000000000000" + hash).slice(-12);
+};
+
+const getPanelData = (query) => {
+  return {
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    series: [{
+      data: hash(query).split('').map(e => parseInt(e))
+    }]
+  }
+};
+
+
 let panelCounter = 0;
 let panelQueryCounter = 0;
 const panels = [];
@@ -36,6 +63,11 @@ export const resolvers = {
       return {
         panels: panels.filter(panel => panel.owner.id === userId)
       };
+    },
+    search: ( object, { input: { query }} ) => {
+      return {
+        panelData: getPanelData(query)
+      }
     }
   }
 };
