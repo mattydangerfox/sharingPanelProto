@@ -63,6 +63,20 @@ type PanelData {
   xAxis: XAxis
   series: [Series]
 }
+
+type Mutation {
+  sharePanel(input: SharePanelInput!): SharePanelPayload
+}
+
+input SharePanelInput {
+  ownerId: ID!
+  sharedWith: ID!
+  panelQueryId: ID!
+}
+
+type SharePanelPayload {
+  panelQuery: PanelQuery!
+}
 `;
 
 const schema = makeExecutableSchema({ typeDefs, resolvers });
