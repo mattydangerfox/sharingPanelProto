@@ -2,55 +2,44 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { resolvers } from './resolver';
 
 const typeDefs = `
-type Title {
-  text: String
+type User {
+  id: ID!
 }
 
-type xAxis {
-  categories: [String]
+type PanelShape {
+  height: Int!
+  width: Int!
 }
 
-type SeriesData {
-  data: [Int]
+type PanelQuery {
+  id: ID!
+  owner: User!
+  title: String!
+  sharedWith: [User]
+  esQuery: ESQuery!
 }
 
-type PanelData {
-  title: Title!
-  xAxis: xAxis!
-  series: [SeriesData]
+type ESQuery {
+  query: String!
 }
 
 type Panel {
   id: ID!
-  owner: ID!
-  title: String
-  panelData: PanelData
+  owner: User!
+  panelShape: PanelShape!
+  panelQuery: PanelQuery
 }
 
 type Query {
-  panels(userId: ID!): [Panel]
+  panels(input: PanelsInput!): PanelsPayload
 }
 
-input AddPanelInput {
-  owner: ID!
-  title: String!
+input PanelsInput {
+  userId: ID!
 }
 
-input UpdatePanelInput {
-  id: ID!
-  title: String!
-}
-
-type Mutation {
-  addPanel(input: AddPanelInput!): Panel
-  removePanel(id: ID!): Panel
-  updatePanel(input: UpdatePanelInput!): Panel
-}
-
-type Subscription {
-  panelUpdated: Panel
-  panelRemoved: Panel
-  panelAdded(userId: ID!): Panel
+type PanelsPayload {
+  panels: [Panel]
 }
 `;
 
