@@ -1,5 +1,7 @@
-const sum = (a, b) => {
-  return a + b
-};
+const db = new Map();
+const tabelNames = ['panel', 'panelShape', 'panelQuery'];
 
-export {sum};
+tabelNames.map(table => db.set(table, new Map()));
+
+export default db;
+export {tabelNames};
