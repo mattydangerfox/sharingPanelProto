@@ -22,13 +22,13 @@ class DB {
     this.counter.panelQueryCounter =+ 1;
     const newPanelQuery = {
       owner,
-      id: this.counter.panelQueryCounter,
+      id: this.counter.panelQueryCounter.toString(),
       sharedWith: [],
       esQuery: {
         query
       }
     };
-    this.db.get('panelQuery').set(this.counter.panelQueryCounter, newPanelQuery);
+    this.db.get('panelQuery').set(this.counter.panelQueryCounter.toString(), newPanelQuery);
     return newPanelQuery;
   };
 
@@ -36,7 +36,7 @@ class DB {
     this.counter.panelCounter += 1;
     return {
       owner,
-      id: this.counter.panelCounter,
+      id: this.counter.panelCounter.toString(),
     };
   };
 
@@ -66,16 +66,18 @@ class DB {
 
   sharePanel = ({ ownerID, userID, panelID }) => {
     const panel = this.db.get('panel').get(panelID);
+
+    // TODO(sanghee): Need to test Error in unittest
     if (!panel) {
-      new Error(`Invalid panelId ${panelID}`);
+      return new Error(`Invalid panelId ${panelID}`);
     }
 
     if (panel.owner.id !== ownerID || panel.panelQuery.owner.id !== ownerID) {
-      new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
+      return new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
     }
 
     if (panel.panelQuery.sharedWith.includes(userID)) {
-      new Error(`panelID ${panelID} is already shared with userId ${userID}`);
+      return new Error(`panelID ${panelID} is already shared with userId ${userID}`);
     }
 
     // Create new panel for with new owner but original owner for panelQuery
@@ -90,15 +92,15 @@ class DB {
   cancelSharedPanel = ({ ownerID, userID, panelID }) => {
     const panel = this.db.get('panel').get(panelID);
     if (!panel) {
-      new Error(`Invalid panelId ${panelID}`);
+      return new Error(`Invalid panelId ${panelID}`);
     }
 
     if (panel.owner.id !== ownerID || panel.panelQuery.owner.id !== ownerID) {
-      new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
+      return new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
     }
 
     if (!panel.panelQuery.sharedWith.includes(userID)) {
-      new Error(`panelID ${panelID} is already not shared with userId ${userID}`);
+      return new Error(`panelID ${panelID} is already not shared with userId ${userID}`);
     }
 
     // Remove userId from panelQuery.sharedWith array and destroy the panel including the panelQuery.

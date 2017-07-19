@@ -15,7 +15,7 @@ type PanelQuery {
   id: ID!
   owner: User!
   title: String!
-  sharedWith: [User]
+  sharedWith: [ID]
   esQuery: ESQuery!
 }
 
@@ -75,7 +75,7 @@ input SharePanelInput {
 }
 
 type SharePanelPayload {
-  panelPanel: Panel!
+  sharedPanel: Panel!
 }
 `;
 

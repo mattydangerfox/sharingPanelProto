@@ -5,8 +5,8 @@ import { getPanelData } from './helpers';
 const db = new DB();
 
 // load sample data
-const owner1 = {id: 1};
-const owner2 = {id: 2};
+const owner1 = {id: '1'};
+const owner2 = {id: '2'};
 const query1 = 'Summer trend 2016';
 const query2 = 'Summer trend 2015';
 
@@ -27,6 +27,10 @@ export const resolvers = {
     }
   },
   Mutation: {
-    sharePanel: ( object, {ownerID, shareWith, panelID} ) => db.sharePanel({ownerID, userId: shareWith, panelID})
+    sharePanel: ( object, {input: { ownerID, shareWith, panelID } } ) => {
+      return {
+        sharedPanel: db.sharePanel({ownerID, userID: shareWith, panelID})
+      };
+    }
   }
 };

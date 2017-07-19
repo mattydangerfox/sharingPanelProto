@@ -12,12 +12,12 @@ test('db has three tables.', () => {
 
 test('creating panelQuery returns panelQuery object.', () => {
   const owner = {
-    id: 1
+    id: '1'
   };
   const query = 'Summer Trend 2016';
   const panelQuery = {
     owner,
-    id: 1,
+    id: '1',
     sharedWith: [],
     esQuery: {
       query
@@ -28,19 +28,19 @@ test('creating panelQuery returns panelQuery object.', () => {
 
 test('creating panel returns panel object.', () => {
   const owner = {
-    id: 1
+    id: '1'
   };
   const query = 'Summer Trend 2016';
   const panel = {
     owner,
-    id: 1,
+    id: '1',
     panelShape: {
       height: 500,
       width: 600,
     },
     panelQuery: {
       owner,
-      id: 1,
+      id: '1',
       sharedWith: [],
       esQuery: {
         query
@@ -51,7 +51,7 @@ test('creating panel returns panel object.', () => {
 });
 
 test('reset DB', () => {
-  const owner = { id: 1 };
+  const owner = { id: '1' };
   const query = 'Summer Trend 2015';
   db.createPanel({owner: owner, query});
   expect(db.getPanels(owner.id).length).toBe(1);
@@ -62,10 +62,10 @@ test('reset DB', () => {
 
 test('get all the panels related to given owner', () => {
   const owner1 = {
-    id: 1
+    id: '1'
   };
   const owner2 = {
-    id: 2
+    id: '2'
   };
   const query = 'Summer Trend 2015';
   db.createPanel({owner: owner1, query});
@@ -76,10 +76,10 @@ test('get all the panels related to given owner', () => {
 
 test('admin gets every panels.', () => {
   const owner1 = {
-    id: 1
+    id: '1'
   };
   const owner2 = {
-    id: 2
+    id: '2'
   };
   const query = 'Summer Trend 2015';
   db.createPanel({owner: owner1, query});
@@ -90,8 +90,8 @@ test('admin gets every panels.', () => {
 });
 
 test('share panel to another user.', () => {
-  const owner1 = { id: 1 };
-  const owner2 = { id: 2 };
+  const owner1 = { id: '1' };
+  const owner2 = { id: '2' };
   const query = 'Summer Trend 2015';
   const panel = db.createPanel({owner: owner1, query});
   expect(db.getPanels(owner1.id).length).toBe(1);
@@ -105,8 +105,8 @@ test('share panel to another user.', () => {
 });
 
 test('cancel sharedPanel.', () => {
-  const owner1 = { id: 1 };
-  const owner2 = { id: 2 };
+  const owner1 = { id: '1' };
+  const owner2 = { id: '2' };
   const query = 'Summer Trend 2015';
   const panel = db.createPanel({owner: owner1, query});
   expect(db.getPanels(owner1.id).length).toBe(1);
