@@ -69,13 +69,13 @@ type Mutation {
 }
 
 input SharePanelInput {
-  ownerId: ID!
-  sharedWith: ID!
-  panelQueryId: ID!
+  ownerID: ID!
+  shareWith: ID!
+  panelID: ID!
 }
 
 type SharePanelPayload {
-  panelQuery: PanelQuery!
+  panelPanel: Panel!
 }
 `;
 
