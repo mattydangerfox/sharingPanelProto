@@ -14,4 +14,18 @@ const hash = (opts = {}) => {
   return ('0'.repeat(length) + hash).slice(length * -1);
 };
 
-export { hash };
+const getPanelData = (query) => {
+  return {
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    series: [{
+      data: hash(query).split('').map(e => parseInt(e))
+    }]
+  }
+};
+
+export {
+  hash,
+  getPanelData
+};

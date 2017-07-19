@@ -1,14 +1,4 @@
-const getPanelData = (query) => {
-  return {
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    },
-    series: [{
-      data: hash(query).split('').map(e => parseInt(e))
-    }]
-  }
-};
-
+import { getPanelData } from './helpers';
 
 let panelCounter = 0;
 let panelQueryCounter = 0;
