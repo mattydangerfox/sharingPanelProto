@@ -50,6 +50,16 @@ test('creating panel returns panel object.', () => {
   expect(db.createPanel({owner, query})).toEqual(panel);
 });
 
+test('reset DB', () => {
+  const owner = { id: 1 };
+  const query = 'Summer Trend 2015';
+  db.createPanel({owner: owner, query});
+  expect(db.getPanels({owner: owner}).length).toBe(1);
+  db.reset();
+  expect(db.getPanels({owner: owner}).length).toBe(0);
+});
+
+
 test('get all the panels related to given owner', () => {
   const owner1 = {
     id: 1
