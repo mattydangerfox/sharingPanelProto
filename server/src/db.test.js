@@ -88,3 +88,25 @@ test('share panel to another user.', () => {
   expect(db.getPanels(owner1.id).length).toBe(1);
   expect(db.getPanels(owner2.id).length).toBe(1);
 });
+
+test('cancel sharedPanel.', () => {
+  const owner1 = { id: 1 };
+  const owner2 = { id: 2 };
+  const query = 'Summer Trend 2015';
+  const panel = db.createPanel({owner: owner1, query});
+  expect(db.getPanels(owner1.id).length).toBe(1);
+  db.sharePanel({
+    ownerID: owner1.id,
+    panelID: panel.id,
+    userID: owner2.id
+  });
+  expect(db.getPanels(owner1.id).length).toBe(1);
+  expect(db.getPanels(owner2.id).length).toBe(1);
+  db.cancelSharedPanel({
+    ownerID: owner1.id,
+    panelID: panel.id,
+    userID: owner2.id
+  });
+  expect(db.getPanels(owner1.id).length).toBe(1);
+  expect(db.getPanels(owner2.id).length).toBe(0);
+});

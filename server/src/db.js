@@ -82,7 +82,32 @@ class DB {
     panel.panelQuery.sharedWith.push(userID);
     this.commit('panel', newPanel);
     return newPanel;
-  }
+  };
+
+  cancelSharedPanel = ({ ownerID, userID, panelID }) => {
+    const panel = this.db.get('panel').get(panelID);
+    if (!panel) {
+      new Error(`Invalid panelId ${panelID}`);
+    }
+
+    if (panel.owner.id !== ownerID || panel.panelQuery.owner.id !== ownerID) {
+      new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
+    }
+
+    if (!panel.panelQuery.sharedWith.includes(userID)) {
+      new Error(`panelID ${panelID} is already not shared with userId ${userID}`);
+    }
+
+    // Remove userId from panelQuery.sharedWith array and destroy the panel including the panelQuery.
+    // TODO: need better way
+    const [,willBeRemovedPanel] = Array.from(this.db.get('panel')).filter(p => {
+      const [, panel] = p;
+      return panel.owner.id === userID && panel.panelQuery.sharedWith.includes(userID);
+    })[0];
+    panel.panelQuery.sharedWith = panel.panelQuery.sharedWith.filter(id => id !== userID);
+    this.db.get('panel').delete(willBeRemovedPanel.id);
+    return willBeRemovedPanel;
+  };
 }
 
 export default DB;
