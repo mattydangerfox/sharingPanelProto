@@ -32,24 +32,56 @@ class DB {
     return newPanelQuery;
   };
 
-  createPanel = ({ owner, query }) => {
+  _createPanelContainer = ({ owner }) => {
     this.counter.panelCounter += 1;
-    const newPanel = {
+    return {
       owner,
       id: this.counter.panelCounter,
-      panelQuery: this.createPanelQuery({owner, query}),
-      panelShape: {
-        height: 500,
-        width: 600,
-      }
     };
-    this.db.get('panel').set(this.counter.panelCounter, newPanel);
+  };
+
+  _createPanelShape = (shape = {height: 500, width: 600}) => {
+    return shape
+  };
+
+  commit = (tableName, newObject) => {
+    this.db.get(tableName).set(newObject.id, newObject);
+  };
+
+  createPanel = ({ owner, query }) => {
+    const newPanel = this._createPanelContainer({ owner });
+    newPanel.panelShape = this._createPanelShape();
+    newPanel.panelQuery = this.createPanelQuery({ owner, query });
+    this.commit('panel', newPanel);
     return newPanel;
   };
 
   getPanels = ({ owner }) => {
     return Array.from(this.db.get('panel').values())
-      .filter(o => o.owner.id === owner.id)
+      .filter(o => o.owner.id === owner.id);
+  };
+
+  sharePanel = ({ ownerID, userID, panelID }) => {
+    const panel = this.db.get('panel').get(panelID);
+    if (!panel) {
+      new Error(`Invalid panelId ${panelID}`);
+    }
+
+    if (panel.owner.id !== ownerID || panel.panelQuery.owner.id !== ownerID) {
+      new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
+    }
+
+    if (panel.panelQuery.sharedWith.includes(userID)) {
+      new Error(`panelID ${panelID} is already shared with userId ${userID}`);
+    }
+
+    // Create new panel for with new owner but original owner for panelQuery
+    const newPanel = this._createPanelContainer({ owner: { id: userID } });
+    newPanel.panelShape = this._createPanelShape();
+    newPanel.panelQuery = panel.panelQuery;
+    panel.panelQuery.sharedWith.push(userID);
+    this.commit('panel', newPanel);
+    return newPanel;
   }
 }
 
