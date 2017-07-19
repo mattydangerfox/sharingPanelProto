@@ -1,11 +1,13 @@
-import db, {
-  tabelNames,
-  createPanelQuery,
-  createPanel,
-} from './db'
+import DB from './db';
+
+const db = new DB();
+
+beforeEach(() => {
+  db.reset();
+});
 
 test('db has three tables.', () => {
-  expect(Array.from(db.keys())).toEqual(tabelNames);
+  expect(Array.from(db.tableNames)).toEqual(db.tableNames);
 });
 
 test('creating panelQuery returns panelQuery object.', () => {
@@ -21,7 +23,7 @@ test('creating panelQuery returns panelQuery object.', () => {
       query
     }
   };
-  expect(createPanelQuery({ owner, query })).toEqual(panelQuery);
+  expect(db.createPanelQuery({ owner, query })).toEqual(panelQuery);
 });
 
 test('creating panel returns panel object.', () => {
@@ -45,5 +47,19 @@ test('creating panel returns panel object.', () => {
       }
     }
   };
-  expect(createPanel({owner, query})).toEqual(panel);
+  expect(db.createPanel({owner, query})).toEqual(panel);
+});
+
+test('get all the panels related to given owner', () => {
+  const owner1 = {
+    id: 1
+  };
+  const owner2 = {
+    id: 2
+  };
+  const query = 'Summer Trend 2015';
+  db.createPanel({owner: owner1, query});
+  db.createPanel({owner: owner2, query});
+  expect(db.getPanels({owner: owner1}).length).toBe(1);
+  expect(db.getPanels({owner: owner2}).length).toBe(1);
 });
