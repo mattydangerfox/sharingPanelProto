@@ -56,9 +56,9 @@ class DB {
     return newPanel;
   };
 
-  getPanels = ({ owner }) => {
+  getPanels = (ownerID) => {
     return Array.from(this.db.get('panel').values())
-      .filter(o => o.owner.id === owner.id);
+      .filter(o => o.owner.id === ownerID);
   };
 
   sharePanel = ({ ownerID, userID, panelID }) => {
