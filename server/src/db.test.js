@@ -74,6 +74,21 @@ test('get all the panels related to given owner', () => {
   expect(db.getPanels(owner2.id).length).toBe(1);
 });
 
+test('admin gets every panels.', () => {
+  const owner1 = {
+    id: 1
+  };
+  const owner2 = {
+    id: 2
+  };
+  const query = 'Summer Trend 2015';
+  db.createPanel({owner: owner1, query});
+  db.createPanel({owner: owner2, query});
+  expect(db.getPanels(owner1.id).length).toBe(1);
+  expect(db.getPanels(owner2.id).length).toBe(1);
+  expect(db.getPanels('admin').length).toBe(2);
+});
+
 test('share panel to another user.', () => {
   const owner1 = { id: 1 };
   const owner2 = { id: 2 };

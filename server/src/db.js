@@ -56,7 +56,10 @@ class DB {
     return newPanel;
   };
 
-  getPanels = (ownerID) => {
+  getPanels = (ownerID = 'admin') => {
+    if (ownerID === 'admin') {
+      return Array.from(this.db.get('panel').values());
+    }
     return Array.from(this.db.get('panel').values())
       .filter(o => o.owner.id === ownerID);
   };
