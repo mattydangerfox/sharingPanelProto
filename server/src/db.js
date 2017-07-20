@@ -19,7 +19,7 @@ class DB {
   }
 
   createPanelQuery = ({ ownerID, query }) => {
-    this.counter.panelQueryCounter =+ 1;
+    this.counter.panelQueryCounter += 1;
     const newPanelQuery = {
       ownerID,
       id: this.counter.panelQueryCounter.toString(),
