@@ -56,6 +56,12 @@ class DB {
     return newPanel;
   };
 
+  removePanel = ({ panelID }) => {
+    const panel = this.db.get('panel').get(panelID);
+    this.db.get('panel').delete(panelID);
+    return panel;
+  };
+
   getPanels = (ownerID = 'admin') => {
     if (ownerID === 'admin') {
       return Array.from(this.db.get('panel').values());

@@ -64,6 +64,7 @@ type Mutation {
   sharePanel(input: SharePanelInput!): SharePanelPayload
   cancelSharedPanel(input: CancelSharedPanelInput!): CancelSharedPanelPayload
   createPanel(input: CreatePanelInput!): CreatePanelPayload
+  removePanel(input: RemovePanelInput!): RemovePanelPayload
 }
 
 input SharePanelInput {
@@ -93,6 +94,14 @@ input CreatePanelInput {
 
 type CreatePanelPayload {
   createdPanel: Panel!
+}
+
+input RemovePanelInput {
+  panelID: ID!
+}
+
+type RemovePanelPayload {
+  removedPanel: Panel
 }
 `;
 

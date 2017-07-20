@@ -46,6 +46,33 @@ test('creating panel returns panel object.', () => {
   expect(db.createPanel({ownerID, query})).toEqual(panel);
 });
 
+test('Deleting panel returns deleted panel object.', () => {
+  // TODO: please use scoping for sub test cases
+  // * Check database to make sure panel is deleted
+  const ownerID = '1';
+  const query = 'Summer Trend 2016';
+  const panel = {
+    ownerID,
+    id: '1',
+    panelShape: {
+      height: 500,
+      width: 600,
+    },
+    panelQuery: {
+      ownerID,
+      id: '1',
+      sharedWith: [],
+      esQuery: {
+        query
+      }
+    }
+  };
+  expect(db.createPanel({ownerID, query})).toEqual(panel);
+
+  expect(db.removePanel({ panelID: panel.id })).toEqual(panel);
+  expect(db.db.get('panel').get(panel.id)).toBe(undefined);
+});
+
 test('reset DB.', () => {
   const ownerID = '1';
   const query = 'Summer Trend 2015';
