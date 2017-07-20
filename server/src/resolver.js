@@ -36,6 +36,11 @@ export const resolvers = {
       return {
         canceledSharedPanel: db.cancelSharedPanel({ownerID, userID: shareWith, panelID})
       }
+    },
+    createPanel: ( object, { input: { ownerID, query } } ) => {
+      return {
+        createdPanel: db.createPanel( { ownerID, query } )
+      }
     }
   }
 };
