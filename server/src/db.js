@@ -100,7 +100,7 @@ class DB {
     }
 
     if (!panel.panelQuery.sharedWith.includes(userID)) {
-      return new Error(`panelID ${panelID} is already not shared with userId ${userID}`);
+      return new Error(`panelID ${panelID} is not shared with userId ${userID}`);
     }
 
     // Remove userId from panelQuery.sharedWith array and destroy the panel including the panelQuery.
