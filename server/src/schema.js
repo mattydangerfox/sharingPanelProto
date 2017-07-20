@@ -66,6 +66,7 @@ type PanelData {
 
 type Mutation {
   sharePanel(input: SharePanelInput!): SharePanelPayload
+  cancelSharedPanel(input: CancelSharedPanelInput!): CancelSharedPanelPayload 
 }
 
 input SharePanelInput {
@@ -76,6 +77,16 @@ input SharePanelInput {
 
 type SharePanelPayload {
   sharedPanel: Panel!
+}
+
+input CancelSharedPanelInput {
+  ownerID: ID!
+  shareWith: ID!
+  panelID: ID!  
+}
+
+type CancelSharedPanelPayload {
+  canceledSharedPanel: Panel!
 }
 `;
 
