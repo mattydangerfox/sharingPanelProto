@@ -2,10 +2,6 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { resolvers } from './resolver';
 
 const typeDefs = `
-type User {
-  id: ID!
-}
-
 type PanelShape {
   height: Int!
   width: Int!
@@ -13,7 +9,7 @@ type PanelShape {
 
 type PanelQuery {
   id: ID!
-  owner: User!
+  ownerID: ID!
   title: String!
   sharedWith: [ID]
   esQuery: ESQuery!
@@ -25,7 +21,7 @@ type ESQuery {
 
 type Panel {
   id: ID!
-  owner: User!
+  ownerID: ID!
   panelShape: PanelShape!
   panelQuery: PanelQuery
 }
@@ -66,7 +62,8 @@ type PanelData {
 
 type Mutation {
   sharePanel(input: SharePanelInput!): SharePanelPayload
-  cancelSharedPanel(input: CancelSharedPanelInput!): CancelSharedPanelPayload 
+  cancelSharedPanel(input: CancelSharedPanelInput!): CancelSharedPanelPayload
+  createPanel(input: CreatePanelInput!): CreatePanelPayload
 }
 
 input SharePanelInput {
@@ -87,6 +84,15 @@ input CancelSharedPanelInput {
 
 type CancelSharedPanelPayload {
   canceledSharedPanel: Panel!
+}
+
+input CreatePanelInput {
+  ownerID: ID!
+  query: String!
+}
+
+type CreatePanelPayload {
+  createdPanel: Panel!
 }
 `;
 

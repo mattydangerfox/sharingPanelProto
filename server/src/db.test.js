@@ -11,35 +11,31 @@ test('db has three tables.', () => {
 });
 
 test('creating panelQuery returns panelQuery object.', () => {
-  const owner = {
-    id: '1'
-  };
+  const ownerID = '1';
   const query = 'Summer Trend 2016';
   const panelQuery = {
-    owner,
+    ownerID,
     id: '1',
     sharedWith: [],
     esQuery: {
       query
     }
   };
-  expect(db.createPanelQuery({ owner, query })).toEqual(panelQuery);
+  expect(db.createPanelQuery({ ownerID, query })).toEqual(panelQuery);
 });
 
 test('creating panel returns panel object.', () => {
-  const owner = {
-    id: '1'
-  };
+  const ownerID = '1';
   const query = 'Summer Trend 2016';
   const panel = {
-    owner,
+    ownerID,
     id: '1',
     panelShape: {
       height: 500,
       width: 600,
     },
     panelQuery: {
-      owner,
+      ownerID,
       id: '1',
       sharedWith: [],
       esQuery: {
@@ -47,81 +43,76 @@ test('creating panel returns panel object.', () => {
       }
     }
   };
-  expect(db.createPanel({owner, query})).toEqual(panel);
+  expect(db.createPanel({ownerID, query})).toEqual(panel);
 });
 
 test('reset DB', () => {
-  const owner = { id: '1' };
+  const ownerID = '1';
   const query = 'Summer Trend 2015';
-  db.createPanel({owner: owner, query});
-  expect(db.getPanels(owner.id).length).toBe(1);
+  db.createPanel({ownerID, query});
+  expect(db.getPanels(ownerID).length).toBe(1);
   db.reset();
-  expect(db.getPanels(owner.id).length).toBe(0);
+  expect(db.getPanels(ownerID).length).toBe(0);
 });
 
 
 test('get all the panels related to given owner', () => {
-  const owner1 = {
-    id: '1'
-  };
-  const owner2 = {
-    id: '2'
-  };
+  const ownerID1 = '1';
+  const ownerID2 = '2';
   const query = 'Summer Trend 2015';
-  db.createPanel({owner: owner1, query});
-  db.createPanel({owner: owner2, query});
-  expect(db.getPanels(owner1.id).length).toBe(1);
-  expect(db.getPanels(owner2.id).length).toBe(1);
+  db.createPanel({ownerID: ownerID1, query});
+  db.createPanel({ownerID: ownerID2, query});
+  expect(db.getPanels(ownerID1).length).toBe(1);
+  expect(db.getPanels(ownerID2).length).toBe(1);
 });
 
 test('admin gets every panels.', () => {
-  const owner1 = {
-    id: '1'
-  };
-  const owner2 = {
-    id: '2'
-  };
+  const ownerID1 = '1';
+  const ownerID2 = '2';
   const query = 'Summer Trend 2015';
-  db.createPanel({owner: owner1, query});
-  db.createPanel({owner: owner2, query});
-  expect(db.getPanels(owner1.id).length).toBe(1);
-  expect(db.getPanels(owner2.id).length).toBe(1);
+  db.createPanel({ownerID: ownerID1, query});
+  db.createPanel({ownerID: ownerID2, query});
+  expect(db.getPanels(ownerID1).length).toBe(1);
+  expect(db.getPanels(ownerID2).length).toBe(1);
   expect(db.getPanels('admin').length).toBe(2);
 });
 
 test('share panel to another user.', () => {
-  const owner1 = { id: '1' };
-  const owner2 = { id: '2' };
+  const ownerID = '1';
+  const panelID = '1';
+  const userID = '2';
   const query = 'Summer Trend 2015';
-  const panel = db.createPanel({owner: owner1, query});
-  expect(db.getPanels(owner1.id).length).toBe(1);
+  db.createPanel({ownerID, query});
+  expect(db.getPanels(ownerID).length).toBe(1);
+  expect(db.getPanels(userID).length).toBe(0);
   db.sharePanel({
-    ownerID: owner1.id,
-    panelID: panel.id,
-    userID: owner2.id
+    ownerID,
+    panelID,
+    userID,
   });
-  expect(db.getPanels(owner1.id).length).toBe(1);
-  expect(db.getPanels(owner2.id).length).toBe(1);
+  expect(db.getPanels(ownerID).length).toBe(1);
+  expect(db.getPanels(userID).length).toBe(1);
 });
 
 test('cancel sharedPanel.', () => {
-  const owner1 = { id: '1' };
-  const owner2 = { id: '2' };
+  const ownerID = '1';
+  const panelID = '1';
+  const userID = '2';
   const query = 'Summer Trend 2015';
-  const panel = db.createPanel({owner: owner1, query});
-  expect(db.getPanels(owner1.id).length).toBe(1);
+  db.createPanel({ownerID, query});
+  expect(db.getPanels(ownerID).length).toBe(1);
   db.sharePanel({
-    ownerID: owner1.id,
-    panelID: panel.id,
-    userID: owner2.id
+    ownerID,
+    panelID,
+    userID,
   });
-  expect(db.getPanels(owner1.id).length).toBe(1);
-  expect(db.getPanels(owner2.id).length).toBe(1);
+  expect(db.getPanels(ownerID).length).toBe(1);
+  expect(db.getPanels(userID).length).toBe(1);
   db.cancelSharedPanel({
-    ownerID: owner1.id,
-    panelID: panel.id,
-    userID: owner2.id
+    ownerID,
+    panelID,
+    userID,
   });
-  expect(db.getPanels(owner1.id).length).toBe(1);
-  expect(db.getPanels(owner2.id).length).toBe(0);
+  expect(db.getPanels(ownerID).length).toBe(1);
+  expect(db.getPanels(userID).length).toBe(0);
 });

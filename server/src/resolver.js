@@ -5,13 +5,13 @@ import { getPanelData } from './helpers';
 const db = new DB();
 
 // load sample data
-const owner1 = {id: '1'};
-const owner2 = {id: '2'};
+const ownerID1 = '1';
+const ownerID2 = '2';
 const query1 = 'Summer trend 2016';
 const query2 = 'Summer trend 2015';
 
-db.createPanel({owner: owner1, query: query1});
-db.createPanel({owner: owner2, query: query2});
+db.createPanel({ownerID: ownerID1, query: query1});
+db.createPanel({ownerID: ownerID2, query: query2});
 
 export const resolvers = {
   Query: {

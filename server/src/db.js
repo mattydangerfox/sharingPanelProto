@@ -18,10 +18,10 @@ class DB {
     this.tableNames.map(table => this.db.set(table, new Map()));
   }
 
-  createPanelQuery = ({ owner, query }) => {
+  createPanelQuery = ({ ownerID, query }) => {
     this.counter.panelQueryCounter =+ 1;
     const newPanelQuery = {
-      owner,
+      ownerID,
       id: this.counter.panelQueryCounter.toString(),
       sharedWith: [],
       esQuery: {
@@ -32,11 +32,11 @@ class DB {
     return newPanelQuery;
   };
 
-  _createPanelContainer = ({ owner }) => {
+  _createPanelContainer = ({ ownerID }) => {
     this.counter.panelCounter += 1;
     return {
-      owner,
       id: this.counter.panelCounter.toString(),
+      ownerID,
     };
   };
 
@@ -48,10 +48,10 @@ class DB {
     this.db.get(tableName).set(newObject.id, newObject);
   };
 
-  createPanel = ({ owner, query }) => {
-    const newPanel = this._createPanelContainer({ owner });
+  createPanel = ({ ownerID, query }) => {
+    const newPanel = this._createPanelContainer({ ownerID });
     newPanel.panelShape = this._createPanelShape();
-    newPanel.panelQuery = this.createPanelQuery({ owner, query });
+    newPanel.panelQuery = this.createPanelQuery({ ownerID, query });
     this.commit('panel', newPanel);
     return newPanel;
   };
@@ -61,7 +61,7 @@ class DB {
       return Array.from(this.db.get('panel').values());
     }
     return Array.from(this.db.get('panel').values())
-      .filter(o => o.owner.id === ownerID);
+      .filter(panel => panel.ownerID === ownerID);
   };
 
   sharePanel = ({ ownerID, userID, panelID }) => {
@@ -72,7 +72,7 @@ class DB {
       return new Error(`Invalid panelId ${panelID}`);
     }
 
-    if (panel.owner.id !== ownerID || panel.panelQuery.owner.id !== ownerID) {
+    if (panel.ownerID !== ownerID || panel.panelQuery.ownerID !== ownerID) {
       return new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
     }
 
@@ -81,7 +81,7 @@ class DB {
     }
 
     // Create new panel for with new owner but original owner for panelQuery
-    const newPanel = this._createPanelContainer({ owner: { id: userID } });
+    const newPanel = this._createPanelContainer({ ownerID: userID });
     newPanel.panelShape = this._createPanelShape();
     newPanel.panelQuery = panel.panelQuery;
     panel.panelQuery.sharedWith.push(userID);
@@ -95,7 +95,7 @@ class DB {
       return new Error(`Invalid panelId ${panelID}`);
     }
 
-    if (panel.owner.id !== ownerID || panel.panelQuery.owner.id !== ownerID) {
+    if (panel.ownerID !== ownerID || panel.panelQuery.ownerID !== ownerID) {
       return new Error(`${ownerID} is not the owner of panelId ${panelID} or it's panelQuery.`);
     }
 
@@ -107,7 +107,7 @@ class DB {
     // TODO: need better way
     const [,willBeRemovedPanel] = Array.from(this.db.get('panel')).filter(p => {
       const [, panel] = p;
-      return panel.owner.id === userID && panel.panelQuery.sharedWith.includes(userID);
+      return panel.ownerID === userID && panel.panelQuery.sharedWith.includes(userID);
     })[0];
     panel.panelQuery.sharedWith = panel.panelQuery.sharedWith.filter(id => id !== userID);
     this.db.get('panel').delete(willBeRemovedPanel.id);
