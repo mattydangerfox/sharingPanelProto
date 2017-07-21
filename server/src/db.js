@@ -58,6 +58,20 @@ class DB {
 
   removePanel = ({ panelID }) => {
     const panel = this.db.get('panel').get(panelID);
+    const panelQueryID = panel.panelQuery.id;
+
+    if (!!panel.panelQuery.sharedWith.length) {
+      const toBeRemovedPanelIDs = [];
+      this.db.get('panel').forEach(panel => {
+        if (panel.panelQuery.id === panelQueryID) {
+          toBeRemovedPanelIDs.push(panel.id);
+        }
+      });
+
+      toBeRemovedPanelIDs.forEach(panelID => this.db.get('panel').delete(panelID));
+    }
+
+    this.db.get('panelQuery').delete(panelQueryID);
     this.db.get('panel').delete(panelID);
     return panel;
   };

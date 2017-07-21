@@ -73,6 +73,28 @@ test('Deleting panel returns deleted panel object.', () => {
   expect(db.db.get('panel').get(panel.id)).toBe(undefined);
 });
 
+test('Deleting owner panel deletes all shared panels related to it.', () => {
+  // Of course, only owner of panelQuery can delete all of them.
+  const ownerID = '1';
+  const userID = '2';
+  const query = 'Summer Trend 2015';
+
+  const panel1 = db.createPanel({ownerID, query});
+  expect(db.getPanels(ownerID).length).toBe(1);
+  expect(db.getPanels(userID).length).toBe(0);
+  db.sharePanel({
+    ownerID,
+    userID,
+    panelID: panel1.id,
+  });
+  expect(db.getPanels(ownerID).length).toBe(1);
+  expect(db.getPanels(userID).length).toBe(1);
+
+  db.removePanel({ panelID: panel1.id });
+  expect(db.getPanels(ownerID).length).toBe(0);
+  expect(db.getPanels(userID).length).toBe(0);
+});
+
 test('reset DB.', () => {
   const ownerID = '1';
   const query = 'Summer Trend 2015';
