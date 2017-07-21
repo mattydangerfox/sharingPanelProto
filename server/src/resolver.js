@@ -42,8 +42,10 @@ export const resolvers = {
         createdPanel: db.createPanel( { ownerID, query } )
       }
     },
-    removePanel: ( object, args ) => {
-      console.log(args);
+    removePanel: ( object, { input: { panelID } } ) => {
+      return {
+        removedPanel: db.removePanel({ panelID })
+      }
     }
   }
 };
