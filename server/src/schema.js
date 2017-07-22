@@ -65,6 +65,7 @@ type Mutation {
   cancelSharedPanel(input: CancelSharedPanelInput!): CancelSharedPanelPayload
   createPanel(input: CreatePanelInput!): CreatePanelPayload
   removePanel(input: RemovePanelInput!): RemovePanelPayload
+  editPanelQuery(input: EditPanelQueryInput!): EditPanelQueryPayload
 }
 
 input SharePanelInput {
@@ -102,6 +103,20 @@ input RemovePanelInput {
 
 type RemovePanelPayload {
   removedPanel: Panel
+}
+
+input ESQueryInput {
+  query: String!
+}
+
+input EditPanelQueryInput {
+  panelQueryID: ID!
+  esQuery: ESQueryInput!
+}
+
+type EditPanelQueryPayload {
+  editedPanelQuery: PanelQuery!
+  updatedPanels: [Panel]!
 }
 `;
 

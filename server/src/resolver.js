@@ -46,6 +46,9 @@ export const resolvers = {
       return {
         removedPanel: db.removePanel({ panelID })
       }
+    },
+    editPanelQuery: ( object, { input: { panelQueryID, esQuery } } ) => {
+      return db.editPanelQuery({ panelQueryID, esQuery });
     }
   }
 };
