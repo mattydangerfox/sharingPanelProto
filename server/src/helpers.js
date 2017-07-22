@@ -1,5 +1,4 @@
-const hash = (opts = {}) => {
-  const { string, length } = opts;
+const hash = (string, length = 12) => {
   let hash = 5381;
   let i = string.length;
 
