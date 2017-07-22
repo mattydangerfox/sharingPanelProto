@@ -130,6 +130,22 @@ class DB {
     this.db.get('panel').delete(willBeRemovedPanel.id);
     return willBeRemovedPanel;
   };
+
+  editPanelQuery = ({ panelQueryID, esQuery }) => {
+    const panelQuery = this.db.get('panelQuery').get(panelQueryID);
+    panelQuery.esQuery = esQuery;
+
+    // need to find panels including edited panelQuery
+    const updatedPanels = [];
+    this.db.get('panel').forEach(panel => {
+      if (panel.panelQuery.id === panelQueryID) updatedPanels.push(panel);
+    });
+    return {
+      editedPanelQuery: panelQuery,
+      updatedPanels,
+    }
+  };
+
 }
 
 export default DB;

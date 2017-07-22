@@ -165,3 +165,58 @@ test('cancel sharedPanel.', () => {
   expect(db.getPanels(ownerID).length).toBe(1);
   expect(db.getPanels(userID).length).toBe(0);
 });
+
+test('edit Panel query then return edited panel query and related panels.', () => {
+  const ownerID = '1';
+  const query = 'Summer Trend 2016';
+  const panel = {
+    ownerID,
+    id: '1',
+    panelShape: {
+      height: 500,
+      width: 600,
+    },
+    panelQuery: {
+      ownerID,
+      id: '1',
+      sharedWith: [],
+      esQuery: {
+        query
+      }
+    }
+  };
+  expect(db.createPanel({ownerID, query})).toEqual(panel);
+
+  const newESQuery = {
+    query: 'Summer Trend 2017'
+  };
+  const editPanelQueryPayload = db.editPanelQuery({
+    panelQueryID: panel.panelQuery.id,
+    esQuery: newESQuery
+  });
+  const expectedPayload = {
+    "editedPanelQuery": {
+      "esQuery": {"query": "Summer Trend 2017"},
+      "id": "1",
+      "ownerID": "1",
+      "sharedWith": []
+    },
+    "updatedPanels": [{
+      "id": "1",
+      "ownerID": "1",
+      "panelQuery": {
+        "esQuery": {
+          "query": "Summer Trend 2017",
+        },
+        "id": "1",
+        "ownerID": "1",
+        "sharedWith": [],
+        },
+      "panelShape": {
+        "height": 500,
+        "width": 600,
+      },
+    }],
+  };
+  expect(editPanelQueryPayload).toEqual(expectedPayload);
+});
