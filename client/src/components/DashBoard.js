@@ -17,7 +17,9 @@ class DashBoard extends Component {
       return <h1>Error: {error.message}</h1>
     }
 
-    const list = panels.panels.map(panel => <APanel key={panel.id} query={panel.panelQuery.esQuery.query}/>);
+    const list = panels.panels.map(panel => {
+      return <APanel key={panel.id} panel={panel} />
+    });
     return (
       <div className="Dashboard">
         <h2>Dashboard</h2>

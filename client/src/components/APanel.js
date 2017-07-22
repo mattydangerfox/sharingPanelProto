@@ -6,18 +6,20 @@ import {
 
 class APanel extends Component {
   render() {
-    const { data: { loading, error, search }} = this.props;
+    const { data: { loading, error, search }, panel } = this.props;
+    let text = `panel.id: ${panel.id}, query: ${panel.panelQuery.esQuery.query} - `;
     if (loading) {
-      return <li>loading...</li>
+      text += 'loading...';
+      return <li>{text}</li>;
     }
 
     if (error) {
-      return <li>Error: {error.message}</li>
+      text += `Error: ${error.message} loading...`;
+      return <li>{text}</li>;
     }
 
-    return (
-      <li>{search.panelData.series[0].data.toString()}</li>
-    )
+    text += `Result: ${search.panelData.series[0].data.toString()}`;
+    return <li>{text}</li>;
   }
 }
 
@@ -37,7 +39,7 @@ export const searchQuery = gql`
 `;
 
 export default(graphql(searchQuery, {
-  options: (props) => ({
-    variables: { input: { query: props.query }}
+  options: ({ panel }) => ({
+    variables: { input: { query: panel.panelQuery.esQuery.query }}
   })
 }))(APanel);
