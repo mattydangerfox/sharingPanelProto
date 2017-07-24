@@ -3,7 +3,7 @@ import {
   gql,
   graphql,
 } from 'react-apollo';
-import APanelList from './PanelList';
+import PanelList from './PanelList';
 
 class DashBoard extends Component {
 
@@ -20,7 +20,7 @@ class DashBoard extends Component {
     return (
       <div className="Dashboard">
         <h2>Dashboard</h2>
-        <APanelList panels={panels}/>
+        <PanelList panels={panels}/>
       </div>
     );
   }
