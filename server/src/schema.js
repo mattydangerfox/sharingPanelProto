@@ -28,6 +28,7 @@ type Panel {
 
 type Query {
   panels(input: PanelsInput!): PanelsPayload
+  panel(input: PanelInput!): PanelPayload
   search(input: SearchInput!): SearchPayload
 }
 
@@ -38,6 +39,15 @@ input PanelsInput {
 type PanelsPayload {
   panels: [Panel]
 }
+
+input PanelInput{
+  panelID: ID!
+}
+
+type PanelPayload {
+  panel: Panel
+}
+
 
 input SearchInput {
   query: String!

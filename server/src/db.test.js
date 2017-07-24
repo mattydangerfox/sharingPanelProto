@@ -104,6 +104,25 @@ test('reset DB.', () => {
   expect(db.getPanels(ownerID).length).toBe(0);
 });
 
+test('get a panel by given panelID.', () => {
+  const ownerID1 = '1';
+  const query = 'Summer Trend 2015';
+  const panel = db.createPanel({ownerID: ownerID1, query});
+  expect(db.getPanel(panel.id)).toBe(panel);
+});
+
+test('getting a panel by not exist panel ID returns error.', () => {
+  const ownerID1 = '1';
+  const query = 'Summer Trend 2015';
+  db.createPanel({ownerID: ownerID1, query});
+  const invalidPanelID = 10000;
+
+  function getInvalidPanel() {
+    db.getPanel(invalidPanelID);
+  }
+
+  expect(getInvalidPanel).toThrowError(/does not exist/);
+});
 
 test('get all the panels related to given owner.', () => {
   const ownerID1 = '1';

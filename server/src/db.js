@@ -73,6 +73,14 @@ class DB {
     return panel;
   };
 
+  getPanel = (panelID) => {
+    const panel = this.db.get('panel').get(panelID);
+    if (!!panel) {
+      return panel;
+    }
+    throw new Error(`panel ID ${panelID} does not exist.`);
+  };
+
   getPanels = (ownerID = 'admin') => {
     if (ownerID === 'admin') {
       return Array.from(this.db.get('panel').values());

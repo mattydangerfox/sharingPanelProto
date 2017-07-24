@@ -15,6 +15,11 @@ db.createPanel({ownerID: ownerID2, query: query2});
 
 export const resolvers = {
   Query: {
+    panel: ( object, { input: { panelID }} ) => {
+      return {
+        panel: db.getPanel(panelID)
+      };
+    },
     panels: ( object, { input: { userId }} ) => {
       return {
         panels: db.getPanels(userId)
