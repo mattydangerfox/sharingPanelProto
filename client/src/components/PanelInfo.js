@@ -3,6 +3,12 @@ import {
   gql,
   graphql,
 } from 'react-apollo';
+import {
+  CardBlock,
+  CardTitle,
+  CardSubtitle,
+  Button
+} from 'reactstrap';
 
 const ENTER_KEY_CODE = 13;
 const ESC_KEY_CODE = 27;
@@ -33,18 +39,31 @@ class PanelInfo extends Component {
   };
 
   render() {
-    const {id, panelQuery: { esQuery } } = this.props.panel;
+    const query = this.props.panel.panelQuery.esQuery.query;
     if (this.state.editing) {
       const input = <input
-        placeholder={esQuery.query}
+        placeholder={query}
         onKeyDown={this._handleKeyDownOnInput} />;
-      return <span>{input}</span>;
+      return (
+        <div>
+          <CardBlock>
+            <CardTitle>{input}</CardTitle>
+            <CardSubtitle>ownerID: {this.props.panel.ownerID}</CardSubtitle>
+            <Button onClick={this._handleOnClickEdit}>edit query</Button>;
+          </CardBlock>
+        </div>
+      );
     }
 
-    const button = <button type="button"onClick={this._handleOnClickEdit}>edit query</button>;
     return (
-      <span>id: {id}, query: {esQuery.query} {button}</span>
-    )
+      <div>
+        <CardBlock>
+          <CardTitle>{query}</CardTitle>
+          <CardSubtitle>ownerID: {this.props.panel.ownerID}</CardSubtitle>
+          <Button onClick={this._handleOnClickEdit}>edit query</Button>
+        </CardBlock>
+      </div>
+    );
   }
 }
 

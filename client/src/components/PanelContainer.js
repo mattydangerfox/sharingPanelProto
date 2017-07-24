@@ -3,6 +3,7 @@ import {
   gql,
   graphql,
 } from 'react-apollo';
+import { Card } from 'reactstrap';
 import APanelResult from './PanelResult';
 import APanelInfo from './PanelInfo';
 
@@ -10,14 +11,19 @@ class PanelContainer extends Component {
   render() {
     const { data: { loading, error, panel } } = this.props;
     if (loading) {
-      return <li>{'loading...'}</li>;
+      return <Card>{'loading...'}</Card>;
     }
 
     if (error) {
-      return <li>{error}</li>;
+      return <Card>{error}</Card>;
     }
 
-    return <li><APanelInfo panel={panel.panel} /> :: <APanelResult panel={panel.panel} /></li>;
+    return (
+      <Card className="Panel">
+        <APanelResult panel={panel.panel} />
+        <APanelInfo panel={panel.panel}/>
+      </Card>
+    );
   }
 }
 

@@ -6,8 +6,6 @@ export default class PanelList extends Component {
     const list = this.props.panels.panels.map(panel => {
       return <PanelContainer key={panel.id} panel={panel} />
     });
-    return (
-      <ol>{list}</ol>
-    )
+    return <div>{list}</div>;
   }
 }
