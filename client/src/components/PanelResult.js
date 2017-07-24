@@ -3,22 +3,20 @@ import {
   gql,
   graphql,
 } from 'react-apollo';
-
-
+import ReactHighcharts from 'react-highcharts';
 
 class PanelResult extends Component {
   render() {
     const { data: { loading, error, search } } = this.props;
     if (loading) {
-      return <span>{'loading...'}</span>;
+      return <div className="highcharts-container-box">{'loading...'}</div>;
     }
 
     if (error) {
-      return <span>{`Error: ${error}`}</span>;
+      return <div>{`Error: ${error}`}</div>;
     }
 
-    const text = `Result: ${search.panelData.series[0].data.toString()}`;
-    return <span>{text}</span>;
+    return <ReactHighcharts config={search.panelData}/>
   }
 }
 
