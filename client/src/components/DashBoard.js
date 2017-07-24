@@ -3,7 +3,7 @@ import {
   gql,
   graphql,
 } from 'react-apollo';
-import APanelList from './APanelList';
+import APanelList from './PanelList';
 
 class DashBoard extends Component {
 

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import Panel from './Panel';
+import PanelContainer from './PanelContainer';
 
-class PanelList extends Component {
+export default class PanelList extends Component {
   render() {
+    const list = this.props.panels.panels.map(panel => {
+      return <PanelContainer key={panel.id} panel={panel} />
+    });
     return (
-      <div>{this.props.panels.map(p => <Panel key={p.id} userId={this.props.userId} panel={p}/>)}</div>
-    );
+      <ol>{list}</ol>
+    )
   }
 }
-
-export default PanelList;

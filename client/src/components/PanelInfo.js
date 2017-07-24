@@ -7,7 +7,7 @@ import {
 const ENTER_KEY_CODE = 13;
 const ESC_KEY_CODE = 27;
 
-class APanelInfo extends Component {
+class PanelInfo extends Component {
   state = {
     editing: false
   };
@@ -67,4 +67,4 @@ export const editPanelQueryMutation = gql`
   }
 `;
 
-export default graphql(editPanelQueryMutation)(APanelInfo);
+export default graphql(editPanelQueryMutation)(PanelInfo);

@@ -3,10 +3,10 @@ import {
   gql,
   graphql,
 } from 'react-apollo';
-import APanelResult from './APanelResult';
-import APanelInfo from './APanelInfo';
+import APanelResult from './PanelResult';
+import APanelInfo from './PanelInfo';
 
-class APanelContainer extends Component {
+class PanelContainer extends Component {
   render() {
     const { data: { loading, error, panel } } = this.props;
     if (loading) {
@@ -44,4 +44,4 @@ export default (graphql(panelQuery, {
   options: (props) => ({
     variables: { input: { panelID: props.panel.id}}
   })
-}))(APanelContainer);
+}))(PanelContainer);

@@ -6,7 +6,7 @@ import {
 
 
 
-class APanelResult extends Component {
+class PanelResult extends Component {
   render() {
     const { data: { loading, error, search } } = this.props;
     if (loading) {
@@ -41,4 +41,4 @@ export default(graphql(searchQuery, {
   options: ({panel}) => ({
     variables: {input: {query: panel.panelQuery.esQuery.query}}
   })
-}))(APanelResult);
+}))(PanelResult);
