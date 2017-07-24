@@ -26,7 +26,9 @@ class APanel extends Component {
       this.props.updatePanelMutation({
         variables: {
           input: {
-            id: this.props.panel.id, title: e.target.value}
+            id: this.props.panel.id,
+            title: e.target.value
+          }
         },
         update: (store, { data: { updatePanel } }) => {
           const data = store.readQuery({

@@ -3,7 +3,7 @@ import {
   gql,
   graphql,
 } from 'react-apollo';
-import APanel from './APanel';
+import APanelList from './APanelList';
 
 class DashBoard extends Component {
 
@@ -17,15 +17,10 @@ class DashBoard extends Component {
       return <h1>Error: {error.message}</h1>
     }
 
-    const list = panels.panels.map(panel => {
-      return <APanel key={panel.id} panel={panel} />
-    });
     return (
       <div className="Dashboard">
         <h2>Dashboard</h2>
-        <ol>
-          {list}
-        </ol>
+        <APanelList panels={panels}/>
       </div>
     );
   }
@@ -37,14 +32,6 @@ export const panelsQuery = gql`
       panels {
         id
         ownerID
-        panelQuery {
-          id
-          ownerID
-          sharedWith
-          esQuery {
-            query
-          }
-        }
       }
     }
   }
