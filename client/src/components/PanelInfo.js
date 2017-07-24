@@ -49,6 +49,7 @@ class PanelInfo extends Component {
           <CardBlock>
             <CardTitle>{input}</CardTitle>
             <CardSubtitle>ownerID: {this.props.panel.ownerID}</CardSubtitle>
+            <CardSubtitle>sharedWith: {this.props.panel.panelQuery.sharedWith}</CardSubtitle>
             <Button onClick={this._handleOnClickEdit}>edit query</Button>;
           </CardBlock>
         </div>
@@ -60,6 +61,7 @@ class PanelInfo extends Component {
         <CardBlock>
           <CardTitle>{query}</CardTitle>
           <CardSubtitle>ownerID: {this.props.panel.ownerID}</CardSubtitle>
+          <CardSubtitle>sharedWith: {this.props.panel.panelQuery.sharedWith}</CardSubtitle>
           <Button onClick={this._handleOnClickEdit}>edit query</Button>
         </CardBlock>
       </div>
