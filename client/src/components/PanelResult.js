@@ -16,7 +16,9 @@ class PanelResult extends Component {
       return <div>{`Error: ${error}`}</div>;
     }
 
-    return <ReactHighcharts config={search.panelData}/>
+    const hiddenTitle = { title: { text: null } };
+    let config = {...search.panelData, ...hiddenTitle};
+    return <ReactHighcharts config={config}/>
   }
 }
 
