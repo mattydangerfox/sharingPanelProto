@@ -44,10 +44,14 @@ class PanelInfo extends Component {
   render() {
     const query = this.props.panel.panelQuery.esQuery.query;
     const panel = this.props.panel;
+    const isOwnerOfPanelQuery = panel.ownerID === panel.panelQuery.ownerID;
     let queryPart = <CardText>query: {this.props.panel.panelQuery.esQuery.query}
-                      <Button size="sm" onClick={this._handleOnClickEdit}>edit</Button>
+                      <Button
+                        size="sm"
+                        disabled={!isOwnerOfPanelQuery}
+                        onClick={this._handleOnClickEdit}>edit
+                      </Button>
                     </CardText>;
-
     if (this.state.editing) {
       const input = <Input
                       placeholder={query}
