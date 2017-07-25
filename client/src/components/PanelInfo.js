@@ -7,8 +7,9 @@ import {
   CardBlock,
   CardTitle,
   CardText,
-  Button,
   CardFooter,
+  Button,
+  Input,
 } from 'reactstrap';
 import PanelResult from './PanelResult';
 
@@ -48,7 +49,7 @@ class PanelInfo extends Component {
                     </CardText>;
 
     if (this.state.editing) {
-      const input = <input
+      const input = <Input
                       placeholder={query}
                       onKeyDown={this._handleKeyDownOnInput} />;
       queryPart = <CardText>query: {input}</CardText>;
@@ -60,12 +61,14 @@ class PanelInfo extends Component {
           <CardTitle>title will be here.</CardTitle>
           <PanelResult panel={panel} />
           {queryPart}
-          <CardText>ownerID: {this.props.panel.ownerID}</CardText>
           <CardText>
+            ownerID: {this.props.panel.ownerID}<br/>
             <small className="text-muted">sharedWith: {this.props.panel.panelQuery.sharedWith}</small>
           </CardText>
         </CardBlock>
-        <CardFooter><Button color="danger" size="sm">remove</Button></CardFooter>
+        <CardFooter>
+          <Button color="danger" size="sm">remove</Button>
+        </CardFooter>
       </div>
     );
   }
