@@ -6,9 +6,11 @@ import {
 import {
   CardBlock,
   CardTitle,
-  CardSubtitle,
-  Button
+  CardText,
+  Button,
+  CardFooter,
 } from 'reactstrap';
+import PanelResult from './PanelResult';
 
 const ENTER_KEY_CODE = 13;
 const ESC_KEY_CODE = 27;
@@ -40,30 +42,30 @@ class PanelInfo extends Component {
 
   render() {
     const query = this.props.panel.panelQuery.esQuery.query;
+    const panel = this.props.panel;
+    let queryPart = <CardText>query: {this.props.panel.panelQuery.esQuery.query}
+                      <Button size="sm" onClick={this._handleOnClickEdit}>edit</Button>
+                    </CardText>;
+
     if (this.state.editing) {
       const input = <input
-        placeholder={query}
-        onKeyDown={this._handleKeyDownOnInput} />;
-      return (
-        <div>
-          <CardBlock>
-            <CardTitle>{input}</CardTitle>
-            <CardSubtitle>ownerID: {this.props.panel.ownerID}</CardSubtitle>
-            <CardSubtitle>sharedWith: {this.props.panel.panelQuery.sharedWith}</CardSubtitle>
-            <Button onClick={this._handleOnClickEdit}>edit query</Button>;
-          </CardBlock>
-        </div>
-      );
+                      placeholder={query}
+                      onKeyDown={this._handleKeyDownOnInput} />;
+      queryPart = <CardText>query: {input}</CardText>;
     }
 
     return (
       <div>
         <CardBlock>
-          <CardTitle>{query}</CardTitle>
-          <CardSubtitle>ownerID: {this.props.panel.ownerID}</CardSubtitle>
-          <CardSubtitle>sharedWith: {this.props.panel.panelQuery.sharedWith}</CardSubtitle>
-          <Button onClick={this._handleOnClickEdit}>edit query</Button>
+          <CardTitle>title will be here.</CardTitle>
+          <PanelResult panel={panel} />
+          {queryPart}
+          <CardText>ownerID: {this.props.panel.ownerID}</CardText>
+          <CardText>
+            <small className="text-muted">sharedWith: {this.props.panel.panelQuery.sharedWith}</small>
+          </CardText>
         </CardBlock>
+        <CardFooter><Button color="danger" size="sm">remove</Button></CardFooter>
       </div>
     );
   }

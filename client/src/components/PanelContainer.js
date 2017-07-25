@@ -4,7 +4,6 @@ import {
   graphql,
 } from 'react-apollo';
 import { Card } from 'reactstrap';
-import PanelResult from './PanelResult';
 import PanelInfo from './PanelInfo';
 
 class PanelContainer extends Component {
@@ -20,7 +19,6 @@ class PanelContainer extends Component {
 
     return (
       <Card className="Panel">
-        <PanelResult panel={panel.panel} />
         <PanelInfo panel={panel.panel}/>
       </Card>
     );
